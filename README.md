@@ -1,4 +1,4 @@
-# AspNetCore-Handlebars
+# Handlebars.Net.ViewEngine
 
 * A handlebars view engine for ASP.NET Core.
 * Source code contains the View Engine library and an example ASP.NET Core 2.0 Web project.
@@ -14,7 +14,7 @@
 
 * Add the following using statement to the top of Startup.cs:
 ```C#
-using HandlebarsViewEngine;
+using Handlebars.Net.ViewEngine;
 ```
 
 * Modify Startup.cs as follows:
@@ -33,11 +33,12 @@ public class Startup
         //services.Configure<HandlebarsViewEngineOptions>(options =>
         //{
         //    options.DefaultLayout = "Views/Shared/layout.hbs";
+        //    options.RegisterHelpers = new Dictionary<string, HandlebarsHelper> { }
         //});
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())
         {
