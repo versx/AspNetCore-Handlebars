@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HandlebarsViewEngine\Handlebars.Net.ViewEngine.csproj" />
+    <ProjectReference Include="..\Handlebars.Net.ViewEngine\Handlebars.Net.ViewEngine.csproj" />
   </ItemGroup>
 
 </Project>
