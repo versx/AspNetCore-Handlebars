@@ -25,7 +25,7 @@
                 return template(context.ViewData.Model);
             });
 
-            context.Writer.Write(result);
+            await context.Writer.WriteAsync(result);
         }
     }
 }
