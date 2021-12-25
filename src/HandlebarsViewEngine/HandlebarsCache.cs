@@ -1,58 +1,68 @@
-﻿using HandlebarsDotNet;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HandlebarsViewEngine
+﻿namespace HandlebarsViewEngine
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+
+    using HandlebarsDotNet;
+    using HandlebarsDotNet.Helpers;
+
+    using static HandlebarsConstants;
+
     public static class HandlebarsCache
     {
-        private static IDictionary<ViewDefinition, Func<object, string>> _views = new Dictionary<ViewDefinition, Func<object, string>>();
-        private static readonly object _locker = new object();
+        private static readonly IDictionary<ViewDefinition, HandlebarsTemplate<object, string>> _views = new Dictionary<ViewDefinition, HandlebarsTemplate<object, string>>();
+        private static readonly object _locker = new();
+        private static readonly IHandlebars _handlebarsContext;
 
         static HandlebarsCache()
         {
+            _handlebarsContext = Handlebars.Create();
+
             // Register all partials
-            List<string> partials = new List<string>();
+            var partials = new List<string>();
 
             // Match all directories under "Views" with "Partials" in the name
-            foreach (var directory in Directory.EnumerateDirectories("Views", "Partials", SearchOption.AllDirectories))
+            foreach (var directory in Directory.EnumerateDirectories(ViewsFolder, PartialsFolder, SearchOption.AllDirectories))
             {
                 // Register all hbs files within the directory
-                foreach (var path in Directory.EnumerateFiles(directory, "*.hbs", SearchOption.TopDirectoryOnly))
+                foreach (var path in Directory.EnumerateFiles(directory, "*" + ViewExtension, SearchOption.TopDirectoryOnly))
                 {
-                    string name = Path.GetFileNameWithoutExtension(path);
+                    var name = Path.GetFileNameWithoutExtension(path);
                     if (partials.Exists(p => p.Equals(name, StringComparison.OrdinalIgnoreCase)))
-                        throw new Exception("Duplicate partial view: '" + name + "' (" + path + "). All partial views must be uniquely named");
-                    else
-                        partials.Add(path);
-                    string partialTemplate = File.ReadAllText(path);
-                    Handlebars.RegisterTemplate(name, partialTemplate);
+                    {
+                        throw new Exception($"Duplicate partial view: '{name}' ({path}). All partial views must be uniquely named regardless of folder");
+                    }
+                    partials.Add(path);
+
+                    var partialTemplate = File.ReadAllText(path);
+                    _handlebarsContext.RegisterTemplate(name, partialTemplate);
                 }
             }
+
+            HandlebarsHelpers.Register(_handlebarsContext);
         }
 
-        public static Func<object, string> GetTemplate(string layoutPath, string viewPath)
+        public static HandlebarsTemplate<object, string> GetTemplate(string layoutPath, string viewPath)
         {
-            lock(_locker)
+            lock (_locker)
             {
                 var viewDef = new ViewDefinition(layoutPath, viewPath);
 
                 if (!_views.ContainsKey(viewDef))
                 {
                     // Get layout template (e.g. Views/Shared/layout.hbs)
-                    string layout = File.ReadAllText(layoutPath);
+                    var layout = File.ReadAllText(layoutPath);
                     
                     // Get view template (e.g. Views/Home/Index.hbs)
-                    string source = File.ReadAllText(viewPath);
+                    var source = File.ReadAllText(viewPath);
 
                     // Create page (insert view into layout)
-                    string page = layout.Replace("{{{body}}}", source);
+                    var page = layout.Replace("{{{body}}}", source);
 
                     // Compile template
-                    var template = Handlebars.Compile(page);
+                    //var template = Handlebars.Compile(page);
+                    var template = _handlebarsContext.Compile(page);
 
                     _views.Add(viewDef, template);
                     return template;
@@ -62,6 +72,16 @@ namespace HandlebarsViewEngine
                     return _views[viewDef];
                 }                           
             }
+        }
+
+        public static void RegisterHelper(string helperName, HandlebarsHelper helper)
+        {
+            _handlebarsContext.RegisterHelper(helperName, helper);
+        }
+
+        public static void RegisterBlockHelper(string helperName, HandlebarsBlockHelper helper)
+        {
+            _handlebarsContext.RegisterHelper(helperName, helper);
         }
     }
 
@@ -74,6 +94,7 @@ namespace HandlebarsViewEngine
         {
             if (string.IsNullOrWhiteSpace(layoutPath))
                 throw new ArgumentException(nameof(layoutPath) + " is null or whitespace", nameof(layoutPath));
+
             if (string.IsNullOrWhiteSpace(viewPath))
                 throw new ArgumentException(nameof(viewPath) + " is null or whitespace", nameof(viewPath));
         }
@@ -84,5 +105,4 @@ namespace HandlebarsViewEngine
                 ViewPath.Equals(other.ViewPath, StringComparison.OrdinalIgnoreCase);
         }
     }
-
 }

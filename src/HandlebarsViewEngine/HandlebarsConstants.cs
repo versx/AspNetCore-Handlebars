@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HandlebarsViewEngine
+﻿namespace HandlebarsViewEngine
 {
     public class HandlebarsConstants
     {
-        public const string VIEW_EXTENSION = ".hbs";
-        public const string CONTROLLER_KEY = "controller";
-        public const string AREA_KEY = "area";
+        public const string DefaultLayout = "Default";
+        public const string ViewsFolder = "Views";
+        public const string PartialsFolder = "Partials";
+        public const string ViewExtension = ".hbs";
+        public const string ControllerKey = "controller";
     }
 }

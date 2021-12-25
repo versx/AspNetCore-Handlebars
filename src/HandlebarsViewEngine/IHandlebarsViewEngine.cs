@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.ViewEngines;
-
-namespace HandlebarsViewEngine
+﻿namespace HandlebarsViewEngine
 {
+    using Microsoft.AspNetCore.Mvc.ViewEngines;
+
     public interface IHandlebarsViewEngine : IViewEngine
     {
     }

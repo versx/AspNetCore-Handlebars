@@ -1,15 +1,18 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using Microsoft.Extensions.Options;
-using System.Collections.Generic;
-using System.IO;
-using HandlebarsViewEngine.Helpers;
-using static HandlebarsViewEngine.HandlebarsConstants;
+﻿using HandlebarsViewEngine.Helpers;
 
 namespace HandlebarsViewEngine
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ViewEngines;
+    using Microsoft.Extensions.Options;
+
+    using static HandlebarsConstants;
+
     public class HandlebarsViewEngine : IHandlebarsViewEngine
     {
         private readonly HandlebarsViewEngineOptions _options;
@@ -17,12 +20,19 @@ namespace HandlebarsViewEngine
         public HandlebarsViewEngine(IOptions<HandlebarsViewEngineOptions> optionsAccessor)
         {
             _options = optionsAccessor?.Value ?? throw new ArgumentNullException(nameof(optionsAccessor));
+
+            if (_options.RegisterHelpers != null && _options.RegisterHelpers.Count > 0)
+            {
+                foreach (var (name, helper) in _options.RegisterHelpers)
+                {
+                    HandlebarsCache.RegisterHelper(name, helper);
+                }
+            }
         }
 
         public ViewEngineResult FindView(ActionContext context, string viewName, bool isMainPage)
         {
-            var controllerName = context.GetNormalizedRouteValue(CONTROLLER_KEY);
-            var areaName = context.GetNormalizedRouteValue(AREA_KEY);
+            var controllerName = context.GetNormalizedRouteValue(ControllerKey);
             var layoutPath = _options.DefaultLayout;
 
             var checkedLocations = new List<string>();
@@ -31,7 +41,7 @@ namespace HandlebarsViewEngine
                 var viewPath = string.Format(location, viewName, controllerName);
                 if (File.Exists(viewPath))
                 {
-                    return ViewEngineResult.Found("Default", new HandlebarsView(layoutPath, viewPath));
+                    return ViewEngineResult.Found(DefaultLayout, new HandlebarsView(layoutPath, viewPath));
                 }
                 checkedLocations.Add(viewPath);
             }
@@ -50,7 +60,7 @@ namespace HandlebarsViewEngine
             }
 
             var layoutPath = _options.DefaultLayout;
-            return ViewEngineResult.Found("Default", new HandlebarsView(layoutPath, applicationRelativePath));
+            return ViewEngineResult.Found(DefaultLayout, new HandlebarsView(layoutPath, applicationRelativePath));
         }
     }
 }

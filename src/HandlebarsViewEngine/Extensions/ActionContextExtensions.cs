@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HandlebarsViewEngine
+﻿namespace HandlebarsViewEngine
 {
+    using System;
+
+    using Microsoft.AspNetCore.Mvc;
+
     public static class ActionContextExtensions
     {
         public static string GetNormalizedRouteValue(this ActionContext context, string key)
@@ -32,7 +30,9 @@ namespace HandlebarsViewEngine
             }
 
             var stringRouteValue = routeValue?.ToString();
-            return string.Equals(normalizedValue, stringRouteValue, StringComparison.OrdinalIgnoreCase) ? normalizedValue : stringRouteValue;
+            return string.Equals(normalizedValue, stringRouteValue, StringComparison.OrdinalIgnoreCase)
+                ? normalizedValue
+                : stringRouteValue;
         }
     }
 }

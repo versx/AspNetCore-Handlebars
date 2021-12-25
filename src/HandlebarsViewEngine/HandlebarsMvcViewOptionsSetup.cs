@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HandlebarsViewEngine
+﻿namespace HandlebarsViewEngine
 {
+    using System;
+
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
+
     public class HandlebarsMvcViewOptionsSetup : IConfigureOptions<MvcViewOptions>
     {
         private readonly IHandlebarsViewEngine _HandlebarsViewEngine;
@@ -33,6 +31,5 @@ namespace HandlebarsViewEngine
 
             options.ViewEngines.Add(_HandlebarsViewEngine);
         }
-
     }
 }

@@ -1,14 +1,10 @@
-﻿using HandlebarsDotNet;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HandlebarsViewEngine
+﻿namespace HandlebarsViewEngine
 {
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.AspNetCore.Mvc.ViewEngines;
+
     public class HandlebarsView : IView
     {
         private readonly string _layoutPath;
