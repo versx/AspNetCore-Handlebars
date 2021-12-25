@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HandlebarsViewEngine.Web.Models
+﻿namespace HandlebarsDotNet.ViewEngine.Web.Models
 {
     public class Person
     {

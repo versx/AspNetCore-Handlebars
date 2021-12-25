@@ -1,4 +1,4 @@
-﻿namespace HandlebarsViewEngine.Web
+﻿namespace HandlebarsDotNet.ViewEngine.Web
 {
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;

@@ -1,4 +1,4 @@
-﻿namespace HandlebarsViewEngine
+﻿namespace HandlebarsDotNet.ViewEngine
 {
     using System.Threading.Tasks;
 

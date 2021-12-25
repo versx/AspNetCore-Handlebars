@@ -1,4 +1,4 @@
-﻿namespace HandlebarsViewEngine.Helpers
+﻿namespace HandlebarsDotNet.ViewEngine.Helpers
 {
     public static class PathHelper
     {
