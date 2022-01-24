@@ -2,16 +2,32 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>versx.Handlebars.Net.ViewEngine</PackageId>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
+    <RepositoryUrl>https://github.com/versx/Handlebars.Net.ViewEngine</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/versx/Handlebars.Net.ViewEngine</PackageProjectUrl>
+    <Description>A handlebars view engine for ASP.NET Core.
+Source code contains the View Engine library and an example ASP.NET Core 2.0 Web project.
+Based on the Pugzor view engine (replaced Pug rendering with handlebars): https://github.com/AspNetMonsters/pugzor
+Uses the Handlebars.net library for view rendering: https://github.com/rexm/Handlebars.Net</Description>
+    <Version>1.0.1</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Handlebars.Net" Version="2.0.10" />
     <PackageReference Include="Handlebars.Net.Helpers" Version="2.2.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Routing.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
   </ItemGroup>
 
 </Project>
